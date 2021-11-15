@@ -1,9 +1,35 @@
 #!/usr/bin/env nextflow
 
-process foo {
-  conda 'fastqc=0.11.9'
 
-  '''
-  fastqc -h
-  '''
+params.input = "/Users/ftl7634/fastqc/input_reads/*.fastq.gz"
+read_pair = Channel.fromPath(params.input)
+
+process runFastQC{
+
+    input:
+        each in_fastq from read_pair
+
+    """
+    mkdir output_fastqc
+    fastqc --outdir output_fastqc \
+    ${in_fastq}
+"""
+
+}
+
+workflow.onComplete {
+
+    println ( workflow.success ? """
+        Pipeline execution summary
+        ---------------------------
+        Completed at: ${workflow.complete}
+        Duration    : ${workflow.duration}
+        Success     : ${workflow.success}
+        workDir     : ${workflow.workDir}
+        exit status : ${workflow.exitStatus}
+        """ : """
+        Failed: ${workflow.errorReport}
+        exit status : ${workflow.exitStatus}
+        """
+    )
 }
