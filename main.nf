@@ -1,7 +1,8 @@
 #!/usr/bin/env nextflow
 
-raw_reads = "/data/projects/cbio-ws/tests/fastq-reads"
-out_dir = "/data/users/cbio-ws-u24/nextflow-out"
+
+raw_reads = "/Users/ftl7634/Downloads/fl/new_workflow/input"
+out_dir = "/Users/ftl7634/Downloads/fl/new_workflow/results/nextflow_1_initial_qc"
 
 out_dir.mkdir()
 
