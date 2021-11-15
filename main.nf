@@ -1,5 +1,16 @@
 #!/usr/bin/env nextflow
 
+params {
+
+    projectName = "tl"
+
+    rawReads = "/data/projects/cbio-ws/tests/fastq-reads"
+    outDir = "/data/users/cbio-ws-u24/nextflow-out"
+    
+    queue = 'main'
+
+}
+
 raw_reads = params.rawReads
 out_dir = file(params.outDir)
 
