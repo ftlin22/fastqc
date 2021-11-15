@@ -1,24 +1,4 @@
-#! /usr/bin/env nextflow
-
-/*************************************
- FastQC
- *************************************/
-
-
- def helpMessage() {
-     log.info """
-      Usage:
-      The typical command for running the pipeline is as follows:
-      nextflow run main.nf fastqc -h
-      """
- }
- 
-  // Show help message
- if (params.help) {
-     helpMessage()
-     exit 0
- }
- 
+#!/usr/bin/env nextflow
 
 raw_reads = params.rawReads
 out_dir = file(params.outDir)
@@ -45,4 +25,36 @@ process runFastQC{
     ${in_fastq.get(0)} \
     ${in_fastq.get(1)}
     """
+}
+
+process runMultiQC{
+    tag { "${params.projectName}.rMQC" }
+    publishDir "${out_dir}/qc/raw", mode: 'copy', overwrite: false
+
+    input:
+        file('*') from fastqc_files.collect()
+
+    output:
+        file('multiqc_report.html')
+
+    """
+    multiqc .
+    """
+}
+
+workflow.onComplete {
+
+    println ( workflow.success ? """
+        Pipeline execution summary
+        ---------------------------
+        Completed at: ${workflow.complete}
+        Duration    : ${workflow.duration}
+        Success     : ${workflow.success}
+        workDir     : ${workflow.workDir}
+        exit status : ${workflow.exitStatus}
+        """ : """
+        Failed: ${workflow.errorReport}
+        exit status : ${workflow.exitStatus}
+        """
+    )
 }
