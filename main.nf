@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 
 
-params.input = "/Users/ftl7634/fastqc/input_reads/*.fastq.gz"
+params.input = "/Users/ftl7634/fastqc_1/input_reads/*.fastq.gz"
 read_pair = Channel.fromPath(params.input)
 
 process runFastQC{
